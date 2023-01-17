@@ -11,6 +11,12 @@ function App() {
         <div className='row'>
           <SearchBar/>
         </div>
+        <div className='row'>
+          {/* <ProductsCards/> */}
+        </div>
+        <div className='row'>
+          {/* <PageNumbers/> */}
+        </div>
       </div>
     </div>
   );
