@@ -6,6 +6,7 @@ const initialState = {
   pages: 0,
   count: 0,
   product: [],
+  completedQueryValues: ''
 };
 
 export const searchBarSlice = createSlice({
@@ -22,15 +23,19 @@ export const searchBarSlice = createSlice({
     setProduct: (state, action) => {
       state.product = action.payload.product
     },
+    setCompletedQueryValues: (state, action) => {
+      state.completedQueryValues = action.payload
+    },
   }
 });
 
-export const {setPages, setCount, setProduct } = searchBarSlice.actions;
+export const {setPages, setCount, setProduct, setCompletedQueryValues} = searchBarSlice.actions;
 
 //this is called selector and allows us to select a value from the state.
 export const selectPages = (state) => state.pages.value;
 export const selectCount = (state) => state.count.value;
 export const selectProduct = (state) => state.product.value;
+export const selectCompletedQueryValues = (state) => state.completedQueryValues.value;
 
 export default searchBarSlice.reducer;
 
