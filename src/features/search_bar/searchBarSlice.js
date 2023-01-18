@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const searchBarSlice = createSlice({
-  name: 'counter',
+  name: 'searchBarSlice',
   initialState,
   //lets us define reducers and generate associate actions
   reducers: {
