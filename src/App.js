@@ -9,15 +9,9 @@ function App() {
     <div className="App">
       <Header/>
       <div className='container'>
-        <div className='row'>
-          <SearchBar/>
-        </div>
-        <div className='row row-cols-3 gy-5'>
-          {/* <ProductsCards/> */}
-        </div>
-        <div className='row'>
-          {/* <PageNumbers/> */}
-        </div>
+        
+        <SearchBar/>
+        
       </div>
     </div>
   );
