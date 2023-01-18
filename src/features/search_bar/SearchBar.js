@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useGetProductsQuery } from "../apiSlice";
 import {
-  setCompletedQueryValues
+  setCompletedQueryValues,
+  setPages,
+  setProduct,
+  setCount
 } from './searchBarSlice';
 
 //function component that renders the searchbar
@@ -11,12 +14,32 @@ const SearchBar = () => {
   const [inputState, setInput] = useState('')
   const [categoryState, setCategory ] = useState('');
   const [priceState, setPrice ] = useState('');
+
   //set up redex state
   const dispatch = useDispatch();
   //trying out api query
-  const queryValues = inputState+categoryState+priceState;
-  const { data } = useGetProductsQuery(queryValues);
-  console.log(data);
+  //const queryValues = inputState+categoryState+priceState;
+  const {
+    data: queryData,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  }  = useGetProductsQuery(inputState+categoryState+priceState);
+  
+  let content;
+  if(isLoading) {
+    content = <p>Loading...</p>
+  } else if (isSuccess) {
+    content = queryData
+    dispatch(setPages(content))
+    dispatch(setProduct(content))
+    dispatch(setCount(content))
+  } else if (isError) {
+    content = "failed"
+  }
+
+  console.log(content);
 
   return (
     <div className="container">
@@ -31,6 +54,9 @@ const SearchBar = () => {
               onChange={event => {
                 setInput( event.target.value === '' ? '' : "&query=" + event.target.value);
                 dispatch(setCompletedQueryValues("&query="+event.target.value+categoryState+priceState));
+                dispatch(setPages(content))
+                dispatch(setProduct(content))
+                dispatch(setCount(content))
               }}
             />
           </div>
@@ -45,6 +71,9 @@ const SearchBar = () => {
                 event => {
                   event.target.value === "" ? setCategory("") : setCategory("&category=" + event.target.value);
                   dispatch(setCompletedQueryValues(inputState+"&category="+event.target.value+priceState));
+                  dispatch(setPages(content))
+                  dispatch(setProduct(content))
+                  dispatch(setCount(content))
                 }
               }
             >
@@ -70,6 +99,9 @@ const SearchBar = () => {
                   event => {
                     event.target.value === "" ? setPrice("") : setPrice("&price=" + event.target.value);
                     dispatch(setCompletedQueryValues(inputState+categoryState+"&price="+event.target.value));
+                    dispatch(setPages(content))
+                    dispatch(setProduct(content))
+                    dispatch(setCount(content))
                   }
                 } 
               >
