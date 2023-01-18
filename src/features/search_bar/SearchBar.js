@@ -13,7 +13,8 @@ const SearchBar = () => {
   //local states for search bar
   const [inputState, setInput] = useState('')
   const [categoryState, setCategory ] = useState('');
-  const [priceState, setPrice ] = useState("&lowest");
+  const [priceState, setPrice ] = useState("&price=lowest");
+  const [ pageNumberState, setPageNumber ] = useState("&page=1")
   
   //set up redex state
   const dispatch = useDispatch();
@@ -23,16 +24,13 @@ const SearchBar = () => {
     isLoading,
     isSuccess,
     isError,
-  }  = useGetProductsQuery(inputState+categoryState+priceState);
-
+  }  = useGetProductsQuery(inputState+categoryState+priceState+pageNumberState);
+  console.log(inputState+categoryState+priceState+pageNumberState)
   let content;
+  let numberBar;
   if(isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
-    dispatch(setPages(queryData.pages));
-    dispatch(setProduct(queryData.product));
-    dispatch(setCount(queryData.count));
-    
     content = queryData.product.map((element) => {
       let {category, image, name, price,} = element;
       return(
@@ -49,9 +47,27 @@ const SearchBar = () => {
           </div>
         </div>
       )
-    },console.log(queryData));
+    });
+    let pageArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
     
-    console.log(inputState+categoryState+priceState)
+    numberBar = pageArray.map((element) => {
+      return(
+        <button
+          key={element} 
+          type="button" 
+          className="btn btn-primary"
+          onClick={event => {
+            setPageNumber("&page="+element);
+            dispatch(setCompletedQueryValues(inputState+categoryState+priceState+"&page="+element));
+          }}
+  
+
+          
+        >
+          {element}
+        </button>
+      )
+    })
 
   } else if (isError) {
     content = "failed"
@@ -69,10 +85,10 @@ const SearchBar = () => {
                   placeholder="Search" 
                   aria-label="Search input" 
                   aria-describedby="button-addon2"
-                  onChange={event => {
-                    setInput( event.target.value === '' ? '' : "&query=" + event.target.value);
-                    dispatch(setCompletedQueryValues("&query="+event.target.value+categoryState+priceState));
-                    // dispatch(setPages(content))
+                  onClick={event => {
+                    setInput( event.target.value !== '' ? "&query=" + event.target.value : '');
+                    dispatch(setCompletedQueryValues("&query="+event.target.value+categoryState+priceState+pageNumberState));
+                    
                     // dispatch(setProduct(content))
                     // dispatch(setCount(content))
                   }}
@@ -88,7 +104,7 @@ const SearchBar = () => {
               onChange={
                 event => {
                   event.target.value === "" ? setCategory("") : setCategory("&category=" + event.target.value);
-                  dispatch(setCompletedQueryValues(inputState+"&category="+event.target.value+priceState));
+                  dispatch(setCompletedQueryValues(inputState+"&category="+event.target.value+priceState+pageNumberState));
                   // dispatch(setPages(content))
                   // dispatch(setProduct(content))
                   // dispatch(setCount(content))
@@ -116,7 +132,7 @@ const SearchBar = () => {
                 onChange={
                   event => {
                     event.target.value === "" ? setPrice("") : setPrice("&price=" + event.target.value);
-                    dispatch(setCompletedQueryValues(inputState+categoryState+"&price="+event.target.value));
+                    dispatch(setCompletedQueryValues(inputState+categoryState+"&price="+event.target.value+pageNumberState));
                     // dispatch(setPages(content))
                     // dispatch(setProduct(content))
                     // dispatch(setCount(content))
@@ -135,8 +151,15 @@ const SearchBar = () => {
       <div className='row row-cols-3 gy-5 offset-1'>
         {content}
       </div>  
-      <div className='row'>
-        
+      <div className='row '>
+      <hr className='gy-5'/>
+      <div className="d-flex justify-content-center">
+        <div className="btn-toolbar mx-auto" role="toolbar">
+            <div className="btn-group" role="group" aria-label="First group">
+              {numberBar}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
