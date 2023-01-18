@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 import { useGetProductsQuery } from "../apiSlice";
 import {
   setCompletedQueryValues,
-  setPages,
-  setCount,
-  setProduct
+  // setPages,
+  // setCount,
+  // setProduct
 } from './searchBarSlice';
 
 //function component that renders the searchbar
@@ -31,6 +31,7 @@ const SearchBar = () => {
   if(isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
+    
     content = queryData.product.map((element) => {
       let {category, image, name, price,} = element;
       return(
@@ -48,9 +49,10 @@ const SearchBar = () => {
         </div>
       )
     });
-    let pageArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
+
+    let makeNumberOfPagesNumber = Array.from({length: queryData.pages}, (_, i) => i + 1);
     
-    numberBar = pageArray.map((element) => {
+    numberBar = makeNumberOfPagesNumber.map((element) => {
       return(
         <button
           key={element} 
@@ -60,15 +62,11 @@ const SearchBar = () => {
             setPageNumber("&page="+element);
             dispatch(setCompletedQueryValues(inputState+categoryState+priceState+"&page="+element));
           }}
-  
-
-          
         >
           {element}
         </button>
       )
     })
-
   } else if (isError) {
     content = "failed"
   }
@@ -85,12 +83,12 @@ const SearchBar = () => {
                   placeholder="Search" 
                   aria-label="Search input" 
                   aria-describedby="button-addon2"
-                  onClick={event => {
+                  onInput={event => {
                     setInput( event.target.value !== '' ? "&query=" + event.target.value : '');
                     dispatch(setCompletedQueryValues("&query="+event.target.value+categoryState+priceState+pageNumberState));
-                    
-                    // dispatch(setProduct(content))
-                    // dispatch(setCount(content))
+                    // dispatch(setPages(content));
+                    // dispatch(setProduct(content));
+                    // dispatch(setCount(content));
                   }}
                 />
               </div>
@@ -105,9 +103,9 @@ const SearchBar = () => {
                 event => {
                   event.target.value === "" ? setCategory("") : setCategory("&category=" + event.target.value);
                   dispatch(setCompletedQueryValues(inputState+"&category="+event.target.value+priceState+pageNumberState));
-                  // dispatch(setPages(content))
-                  // dispatch(setProduct(content))
-                  // dispatch(setCount(content))
+                  // dispatch(setPages(content));
+                  // dispatch(setProduct(content));
+                  // dispatch(setCount(content));
                 }
               }
             >
@@ -133,9 +131,9 @@ const SearchBar = () => {
                   event => {
                     event.target.value === "" ? setPrice("") : setPrice("&price=" + event.target.value);
                     dispatch(setCompletedQueryValues(inputState+categoryState+"&price="+event.target.value+pageNumberState));
-                    // dispatch(setPages(content))
-                    // dispatch(setProduct(content))
-                    // dispatch(setCount(content))
+                    // dispatch(setPages(content));
+                    // dispatch(setProduct(content));
+                    // dispatch(setCount(content));
                   }
                 } 
               >
