@@ -8,7 +8,6 @@ export const productsApi = createApi({
       query: (search) => `products/?${search}`
     }),
   })
-
 })
 
 export const { useGetProductsQuery } = productsApi;
