@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from './components/header'
-import SearchBar from './features/search_bar/SearchBar'
+import Search from './features/search/Search'
 import './App.css';
 
 
@@ -9,9 +9,7 @@ function App() {
     <div className="App">
       <Header/>
       <div className='container'>
-        
-        <SearchBar/>
-        
+        <Search/>
       </div>
     </div>
   );

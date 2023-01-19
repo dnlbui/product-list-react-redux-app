@@ -1,23 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {productsApi} from '../features/apiSlice';
+import {productsApiSlice} from '../features/api/apiSlice';
 import {setupListeners} from '@reduxjs/toolkit/query';
-import searchBarReducer from '../features/search_bar/searchBarSlice'
 
 export const store = configureStore({
   reducer: {
-    [productsApi.reducerPath]: productsApi.reducer,
-    searchBar: searchBarReducer,
-    
+    [productsApiSlice.reducerPath]: productsApiSlice.reducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApi.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(productsApiSlice.middleware),
 });
 
 setupListeners(store.dispatch);
-
-//{serializableCheck: false}
-
-/* middleware: (getDefaultMiddleware) => getDefaultMiddleware({
-  serializableCheck: false
-}) */

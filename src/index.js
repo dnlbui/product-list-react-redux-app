@@ -6,14 +6,14 @@ import { store } from './app/store';
 import App from './App';
 import './index.css';
 import {ApiProvider} from '@reduxjs/toolkit/query/react'
-import {productsApi} from './features/apiSlice'
+import {productsApiSlice} from './features/api/apiSlice'
 
 const container = document.getElementById('root');
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <ApiProvider api={productsApi}>
+    <ApiProvider api={productsApiSlice}>
       <Provider store={store}>
         <App />
       </Provider>
