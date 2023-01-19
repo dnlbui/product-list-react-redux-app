@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGetProductsQuery } from "../apiSlice";
 import {
   setCompletedQueryValues,
-  // setPages,
-  // setCount,
-  // setProduct
+  setPages,
+  setCount,
+  setProduct
 } from './searchBarSlice';
 
 //function component that renders the searchbar
@@ -13,26 +13,29 @@ const SearchBar = () => {
   //local states for search bar
   const [inputState, setInput] = useState('')
   const [categoryState, setCategory ] = useState('');
-  const [priceState, setPrice ] = useState("&price=lowest");
+  const [priceState, setPrice ] = useState("");
   const [ pageNumberState, setPageNumber ] = useState("&page=1")
   
   //set up redex state
   const dispatch = useDispatch();
 
+  //destructure
   const {
     data: queryData,
     isLoading,
     isSuccess,
     isError,
   }  = useGetProductsQuery(inputState+categoryState+priceState+pageNumberState);
-  console.log(inputState+categoryState+priceState+pageNumberState)
+  
   let content;
   let numberBar;
+  let resposneData;
   if(isLoading) {
     content = <p>Loading...</p>
   } else if (isSuccess) {
+    resposneData =  queryData;
     
-    content = queryData.product.map((element) => {
+    content =  queryData.product.map((element) => {
       let {category, image, name, price,} = element;
       return(
         <div className="col " key={name}>
@@ -71,6 +74,17 @@ const SearchBar = () => {
     content = "failed"
   }
 
+  console.log(resposneData)
+  const setStateAfterPromise = async () => {
+    let loadedContent = await resposneData;
+
+    dispatch(setPages(loadedContent));
+    dispatch(setCount(loadedContent));
+    dispatch(setProduct(loadedContent));
+  }
+  setStateAfterPromise();
+ 
+
   return (
     <div className="container">
       <div className="row">
@@ -85,10 +99,8 @@ const SearchBar = () => {
                   aria-describedby="button-addon2"
                   onInput={event => {
                     setInput( event.target.value !== '' ? "&query=" + event.target.value : '');
+          
                     dispatch(setCompletedQueryValues("&query="+event.target.value+categoryState+priceState+pageNumberState));
-                    // dispatch(setPages(content));
-                    // dispatch(setProduct(content));
-                    // dispatch(setCount(content));
                   }}
                 />
               </div>
@@ -103,9 +115,6 @@ const SearchBar = () => {
                 event => {
                   event.target.value === "" ? setCategory("") : setCategory("&category=" + event.target.value);
                   dispatch(setCompletedQueryValues(inputState+"&category="+event.target.value+priceState+pageNumberState));
-                  // dispatch(setPages(content));
-                  // dispatch(setProduct(content));
-                  // dispatch(setCount(content));
                 }
               }
             >
@@ -131,9 +140,6 @@ const SearchBar = () => {
                   event => {
                     event.target.value === "" ? setPrice("") : setPrice("&price=" + event.target.value);
                     dispatch(setCompletedQueryValues(inputState+categoryState+"&price="+event.target.value+pageNumberState));
-                    // dispatch(setPages(content));
-                    // dispatch(setProduct(content));
-                    // dispatch(setCount(content));
                   }
                 } 
               >
