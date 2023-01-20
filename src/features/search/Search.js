@@ -34,7 +34,7 @@ const Search = () => {
   else if (isSuccess) {
     loadedData = queryData;
     
-    //changes local state to 1 if queried page number in URL is too high to
+    //changes local state to 1 if queried page number in RTK Query is too high to
     //render cards since page number not available for loaded products. 
     //This will cause a re-render with query page of 1.
     if(queryData.pages < pageNumberState && queryData.pages !== 0){setPageNumber(1)};
