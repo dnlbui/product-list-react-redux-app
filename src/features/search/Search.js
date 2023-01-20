@@ -27,12 +27,9 @@ const Search = () => {
   let content;
   let numberBar;
   if(isLoading) {
-
     content = <p>Loading...</p>
-
   } 
   else if (isSuccess) {
-  
     //returns Cards to display by mapping products
     content =  queryData.product.map( element => {
       return(<CardExcerpt key={element.name} element={element}/>)
@@ -40,20 +37,17 @@ const Search = () => {
     
     //creates an array for mapping over
     let numberOfPagesArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
+
     //map over array to create the numbers in the numberbar
     numberBar = numberOfPagesArray.map((element, i) => {
-      
       return(<NumberBarExcerpt key={"n"+i} element={element} setPageNumber = {setPageNumber}/>)
     })
-
   } 
   else if (isError) {
 
     content = <p>{error}</p>
 
   }
-
- 
 
   return (
     <div id="SearchContainer" className="container">
