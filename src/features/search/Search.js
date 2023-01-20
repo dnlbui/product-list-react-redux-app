@@ -44,9 +44,7 @@ const Search = () => {
     })
   } 
   else if (isError) {
-
     content = <p>{error}</p>
-
   }
 
   return (
