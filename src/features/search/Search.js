@@ -9,9 +9,9 @@ import SearchBarExcerpt from './SearchBarExcerpt'
 const Search = () => {
   
   //local states for search bar
-  const [inputState, setInput] = useState('')
-  const [categoryState, setCategory ] = useState('');
-  const [priceState, setPrice ] = useState("");
+  const [ inputState, setInput ] = useState('')
+  const [ categoryState, setCategory ] = useState('');
+  const [ priceState, setPrice ] = useState("");
   const [ pageNumberState, setPageNumber ] = useState("&page=1")
   
   //destructure data from Product Query
@@ -21,28 +21,28 @@ const Search = () => {
     isSuccess,
     isError,
     error
-  }  = useGetProductsQuery(inputState+categoryState+priceState+pageNumberState);
+  }  = useGetProductsQuery( inputState+ categoryState + priceState + pageNumberState );
   
+  //if statement that will return component depending on query status
   let content;
   let numberBar;
-  let responseData;
   if(isLoading) {
 
     content = <p>Loading...</p>
 
   } 
   else if (isSuccess) {
-    
-    responseData = queryData;
+  
     //returns Cards to display by mapping products
     content =  queryData.product.map( element => {
       return(<CardExcerpt element={element}/>)
     });
-
+    
     //creates an array for mapping over
     let numberOfPagesArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
     //map over array to create the numbers in the numberbar
     numberBar = numberOfPagesArray.map((element) => {
+      
       return(<NumberBarExcerpt element={element} setPageNumber = {setPageNumber}/>)
     })
 
@@ -52,14 +52,6 @@ const Search = () => {
     content = <p>{error}</p>
 
   }
-
-
-  const asyncPageCheck = async () => {
-    let loadedContent = await responseData;
-
-    if(pageNumberState<loadedContent.pages){setPageNumber(1)};
-  }
-  asyncPageCheck();
 
  
 
