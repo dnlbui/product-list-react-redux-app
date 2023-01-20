@@ -2,7 +2,7 @@
 export default function CardExcerpt ({element}) {
   let {category, image, name, price,} = element;
   return (
-    <div className="col " key={name}>
+    <div className="col ">
       <div className="card" style={{width: 288}}>
         <img src={image} className="card-img-top" alt="..."/>
         <div className="card-body">
