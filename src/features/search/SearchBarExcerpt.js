@@ -1,3 +1,4 @@
+//returns the search bar consisting of the inputbar, category+price drop down menu
 export default function SearchBarExcerpt ({setInput,setCategory,setPrice}) {
   return (
     <div id="sbcontainer" className="container">

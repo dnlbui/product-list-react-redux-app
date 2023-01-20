@@ -1,3 +1,4 @@
+//Returns a card for each product
 export default function CardExcerpt ({element}) {
   let {category, image, name, price,} = element;
   return (

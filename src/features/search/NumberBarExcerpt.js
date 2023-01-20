@@ -1,3 +1,4 @@
+//Returns Number button on NumberBar at the bottom of the browser
 export default function NumberBarExcerpt ({element,setPageNumber}) {
   return (
     <button
