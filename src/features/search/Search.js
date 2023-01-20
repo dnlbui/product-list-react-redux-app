@@ -35,15 +35,15 @@ const Search = () => {
   
     //returns Cards to display by mapping products
     content =  queryData.product.map( element => {
-      return(<CardExcerpt element={element}/>)
+      return(<CardExcerpt key={element.name} element={element}/>)
     });
     
     //creates an array for mapping over
     let numberOfPagesArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
     //map over array to create the numbers in the numberbar
-    numberBar = numberOfPagesArray.map((element) => {
+    numberBar = numberOfPagesArray.map((element, i) => {
       
-      return(<NumberBarExcerpt element={element} setPageNumber = {setPageNumber}/>)
+      return(<NumberBarExcerpt key={"n"+i} element={element} setPageNumber = {setPageNumber}/>)
     })
 
   } 
