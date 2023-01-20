@@ -26,19 +26,26 @@ const Search = () => {
   //if statement that will return component depending on query status
   let content;
   let numberBar;
+  let loadedData;
+  let currentPage;
   if(isLoading) {
     content = <p>Loading...</p>
   } 
   else if (isSuccess) {
+    loadedData = queryData;
+    
     //changes local state to 1 if queried page number in URL is too high to
     //render cards since page number not available for loaded products. 
     //This will cause a re-render with query page of 1.
-    if(queryData.pages < pageNumberState){setPageNumber(1)};
+    if(queryData.pages < pageNumberState && queryData.pages !== 0){setPageNumber(1)};
 
     //returns Cards to display by mapping products
     content =  queryData.product.map( element => {
       return(<CardExcerpt key={element.name} element={element}/>)
     });
+
+    //Current page component
+    currentPage = <div>{queryData.product.length === 0 ? "Nothing to Display" : "Current Page:" + pageNumberState}</div>
     
     //creates an array for mapping over
     let numberOfPagesArray = Array.from({length: queryData.pages}, (_, i) => i + 1);
@@ -51,9 +58,7 @@ const Search = () => {
   else if (isError) {
     content = <p>{error}</p>
   }
-
   
-
   return (
     <div id="SearchContainer" className="container">
       <div id="SearchBarRow" className="row">
@@ -64,13 +69,15 @@ const Search = () => {
       </div>  
       <div className="row ">
         <hr className="gy-5"/>
+        <div>{currentPage}</div>
         <div className="d-flex justify-content-center">
           <div className="btn-toolbar mx-auto" role="toolbar">
             <div className="btn-group" role="group" aria-label="First group">
-              {numberBar}
+              {numberBar} 
             </div>
           </div>
         </div>
+        <hr className="gy-5"/>
       </div>
     </div>
   );
